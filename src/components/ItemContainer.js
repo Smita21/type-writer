@@ -6,7 +6,6 @@ import Speed from "./Speed";
 import { getText } from "../redux";
 
 const initialState = {
-  //   text: this.props.text,
   text: "",
   userInput: "",
   symbols: 0,
