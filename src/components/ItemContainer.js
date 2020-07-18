@@ -20,6 +20,9 @@ export class ItemContainer extends Component {
 
   onRestart = () => {
     this.setState(initialState);
+    this.setState({
+      text: this.props.text
+    })
   };
 
   componentDidMount() {
@@ -57,8 +60,13 @@ export class ItemContainer extends Component {
       this.setState({ started: true });
       this.interval = setInterval(() => {
         this.setState((prevProps) => {
-          return { sec: prevProps.sec + 1 }; //check
+          return { sec: prevProps.sec + 1 };
         });
+        if (this.state.sec === 60) {
+          this.setState({ started: false })
+          clearInterval(this.interval)
+
+        }
       }, 1000);
     }
   };
@@ -80,18 +88,27 @@ export class ItemContainer extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container mt-5 mb-5">
+        <div className="font-weight-bolder">Let's take the text...</div>
+        <hr className="bg-dark" />
         <Preview text={this.state.text} userInput={this.state.userInput} />
         <textarea
+          className="container mt-5 textarea rounded"
           value={this.state.userInput}
           onChange={this.onUserInputChange}
-          readOnly={this.state.finished || this.state.sec > 60}
+          readOnly={this.state.finished || this.state.sec >= 60}
           placeholder="Start Typing"
         ></textarea>
-        <span>Time : {this.state.sec}</span>
-        <span>Error : {this.state.errorWords}</span>
+        <div>
+          <span className="font-weight-bolder">Time : {this.state.sec}</span>
+
+        </div>
+        <span className="font-weight-bolder">Error : {this.state.errorWords}</span>
         <Speed symbols={this.state.symbols} sec={this.state.sec} />
-        <button onClick={this.onRestart}>Restart</button>
+        <div className="mt-5">
+          <button className="btn btn-dark mb-3" onClick={this.onRestart}>Restart</button>
+
+        </div>
       </div>
     );
   }
